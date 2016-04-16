@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This script should be run inside a directory containing a bunch of non-sorted and badly named pics.
  *
@@ -21,22 +20,18 @@ $glob = glob("/{$path}/*");
 sort($glob, SORT_NATURAL);
 
 $array = [];
-foreach ($glob as $file)
-{
+foreach ($glob as $file) {
     $mtime = filemtime($file);
-    $date = date("Y-m-d H:i:s", $mtime);
-    if (array_key_exists($date, $array) == false)
-    {
+    $date  = date("Y-m-d H:i:s", $mtime);
+    if (array_key_exists($date, $array) == false) {
         $array[$date] = 0;
     }
-    $array[$date]++;
+    $array[$date] ++;
 }
 
 $list = [];
-foreach ($glob as $file)
-{
-    if (!is_file($file))
-    {
+foreach ($glob as $file) {
+    if (!is_file($file)) {
         continue;
     }
 
@@ -46,34 +41,28 @@ foreach ($glob as $file)
     }
 
     $directory = date("Y-m-d", $mtime);
-    if (!is_dir($directory))
-    {
+    if (!is_dir($directory)) {
         mkdir($directory);
     }
 
     $date = date("Y-m-d H:i:s", $mtime);
     $ext  = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
-    if ($array[$date] == 1)
-    {
-        $newName = date("H-i-s", $mtime) . "." . $ext;
-        $newPath = "{$directory}/{$newName}";
+    if ($array[$date] == 1) {
+        $newName        = date("H-i-s", $mtime).".".$ext;
+        $newPath        = "{$directory}/{$newName}";
         echo "New name: {$newPath}\n";
         rename($file, $newPath);
         $list[$mtime][] = $newPath;
-    }
-    else
-    {
-        for ($count = 1; ($count <= $array[$date]); $count++)
-        {
-            $newName = date("H-i-s", $mtime) . "_{$count}." . $ext;
+    } else {
+        for ($count = 1; ($count <= $array[$date]); $count++) {
+            $newName = date("H-i-s", $mtime)."_{$count}.".$ext;
             $newPath = "{$directory}/{$newName}";
-            if (!is_file($newPath))
-            {
+            if (!is_file($newPath)) {
                 echo "New name: {$newPath}\n";
                 rename($file, $newPath);
                 $list[$mtime][] = $newPath;
-                break ;
+                break;
             }
         }
     }
@@ -84,20 +73,17 @@ ksort($list);
 $groups = [];
 $group  = null;
 $old    = null;
-foreach ($list as $mtime => $batch)
-{
-    if (is_null($old))
-    {
+foreach ($list as $mtime => $batch) {
+    if (is_null($old)) {
         $group = $batch;
         $old   = $mtime;
-        continue ;
+        continue;
     }
 
-    if ($mtime - $old <= 2)
-    {
+    if ($mtime - $old <= 2) {
         $group = array_merge($group, $batch);
         $old   = $mtime;
-        continue ;
+        continue;
     }
 
     $groups[$mtime] = $group;
@@ -118,7 +104,7 @@ foreach ($groups as $mtime => $group) {
 
         $counter = 1;
         foreach ($group as $file) {
-            $newName = str_repeat('0', strlen($c) - strlen($counter)) . $counter++;
+            $newName = str_repeat('0', strlen($c) - strlen($counter)).$counter++;
             $newPath = "{$directory}/{$newName}.jpg";
             echo "New name: {$newPath}\n";
             rename($file, $newPath);
