@@ -6,7 +6,7 @@
  * It will:
  * - Create 1 directory per day of pictures (example: 2016-04-12) and move all pictures taken that day inside
  * - Rename all pictures using the time they were taken (example: 21-33-28.jpg) managing speedshots as well
- * - Create gifs with your speedshots (group of >= 4 shots taken in less than 1 sec)
+ * - Create gifs with your speedshots (group of >= 5 shots taken in less than 1 sec)
  *
  * Requirements:
  * - Pictures should have their modification date corresponding to the date where they have been taken.

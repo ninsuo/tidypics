@@ -2,7 +2,7 @@
 
 A small script that automatically:
 - reorder pictures coming from a camera
-- create gifs from speedshots
+- create gifs from speedshots (>= 5 shots each separated by <= 2 secs)
 
 ## Example:
 
@@ -98,7 +98,7 @@ alias tidypics='php /Users/alain/scripts/tidypics/tidypics.php'
 
 ## Usage
 
-In a directory containing pictures, type `tidypics`.
+In a directory containing pictures, type `tidypics`
 
 ## Requirements:
 
