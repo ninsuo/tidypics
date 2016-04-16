@@ -16,7 +16,15 @@ date_default_timezone_set('Europe/Paris');
 
 $path = $_SERVER['PWD'];
 
-$glob = glob("/{$path}/*");
+function rglob($pattern, $flags = 0) {
+    $files = glob($pattern, $flags);
+    foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+        $files = array_merge($files, rglob($dir.'/'.basename($pattern), $flags));
+    }
+    return $files;
+}
+
+$glob = rglob("/{$path}/*");
 sort($glob, SORT_NATURAL);
 
 $array = [];
@@ -26,7 +34,7 @@ foreach ($glob as $file) {
     if (array_key_exists($date, $array) == false) {
         $array[$date] = 0;
     }
-    $array[$date] ++;
+    $array[$date]++;
 }
 
 $list = [];
@@ -110,8 +118,10 @@ foreach ($groups as $mtime => $group) {
             rename($file, $newPath);
         }
 
+        $gifDate   = date("Y-m-d", $mtime);
+        $gifTime   = date("H-i-s", $mtime);
         $gifSource = "{$directory}/*.jpg";
-        $gifPath   = "{$directory}/animation.gif";
+        $gifPath   = "{$gifDate}/{$gifTime}.gif";
         echo "Creating {$gifPath}...\n";
         exec("convert -resize 768x576 -delay 25 -loop 0 {$gifSource} {$gifPath}");
     }
