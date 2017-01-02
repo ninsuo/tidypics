@@ -64,6 +64,7 @@ foreach ($glob as $file) {
         $list[$mtime][] = $newPath;
     } else {
         for ($count = 1; ($count <= $array[$date]); $count++) {
+            $number  = str_repeat('0', strlen("{$array[$date]}") - strlen("{$count}")) . $count;
             $newName = date("H-i-s", $mtime)."_{$count}.".$ext;
             $newPath = "{$directory}/{$newName}";
             if (!is_file($newPath)) {
